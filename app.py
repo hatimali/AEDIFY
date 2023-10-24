@@ -3,8 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta
-
+import socket
 app = Flask(__name__)
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://machinery:intelcorei5@localhost/machinery'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///machinery.db'  # Change to your database URI
 db = SQLAlchemy(app)
 engine = create_engine('sqlite:///machinery.db')
@@ -22,6 +23,11 @@ class Machine(db.Model):
     maintenance_start = db.Column(db.DateTime, nullable=True)
     maintenance_end = db.Column(db.DateTime, nullable=True)
     creation_date = db.Column(db.DateTime, default=datetime.now)
+
+
+# @app.route("/")
+# def home():
+#     return f"Container ID: {socket.gethostname()}"
 
 
 @app.route('/machines', methods=['POST'])
@@ -182,6 +188,7 @@ def list_available_machines():
                 'inventory_id': machine.inventory_id,
                 'machine_type': machine.machine_type,
                 'machine_price': machine.machine_price,
+                'in_maintenance': machine.in_maintenance,
                 'creation_date': machine.creation_date.strftime('%Y-%m-%d %H:%M:%S')
             })
 
@@ -203,4 +210,4 @@ def delete_machine(machine_id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

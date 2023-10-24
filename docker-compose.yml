@@ -1,0 +1,27 @@
+# Version of Docker-compose for this Flask Load balancing application
+version: '3.7'
+services:
+  # Add the Flask application Service
+  app:
+  # Location of the Flask Application dockerfile
+    build:
+      context: ./  # Use a relative path to the Compose file
+      dockerfile: Dockerfile  # Specify the name of your Flask Dockerfile if it's not named "Dockerfile"
+    ports:
+       # Flask application Host port: Flask Container port
+      - '5000'
+
+  # nginx service
+  nginx:
+  # The official Nginx Docker from Docker Hub. For building the Nginx container
+    image: nginx:latest
+    volumes:
+    # Volume for the nginx Docker container
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    # The Nginx service depends on the Flask application service (It will link the Flask web application and Nginx Load balancer)
+    depends_on:
+      - app
+    # ports for the Nginx application service
+    ports:
+    # Port for the Nginx load balancer
+      - "80:80"

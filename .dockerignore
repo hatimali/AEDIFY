@@ -1,0 +1,5 @@
+venv
+instance/machinery.db
+__pycache__
+.git
+.gitignore

@@ -22,6 +22,31 @@ Your could should run, but it is okay if part of the functionality is only mocke
 If you are missing some requirements or domain clarifications, use assumptions and document them.
 
 
+## ERD Diagram
+   +-----------------+
+   |     Machine     |
+   +-----------------+
+   | MachineID (PK)  |
+   | Label           |
+   | Inventory ID    |
+   | Machine Type    |
+   | Machine Price   |
+   | In Maintenance  |
+   | Maintenance Start Date |
+   | Maintenance End Date   |
+   | Creation Date   |
+   +-----------------+
+
+
+### Python scalable Flask application using docker-compose and Nginx load balancer
+![load-balancing.PNG](load-balancing.PNG)
+
+### Load Balancing using Nginx
+Load balancing with Nginx uses a round-robin algorithm by default if no other method is defined. 
+With round-robin scheme each server is selected in turns according to the order we set them in the Nginx.conf file.
+
+#### Deploy and Scale our Flask application
+    docker-compose up --build -d --scale app=3
 
 #### SQLite Shell
     sqlite3 .\machinery.db
